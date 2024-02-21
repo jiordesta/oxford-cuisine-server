@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 const OrderSchema = new mongoose.Schema({
-    items: [{type: mongoose.Types.ObjectId}],
-    customer: {type: mongoose.Types.ObjectId},
+    items: {type: Object},
+    customer: {type: String},
+    customer_id: {type: mongoose.Schema.Types.ObjectId},
+    total: {type: String},
     status:{
         type: String,
         enum: ['pending', 'preparing', 'serving','delivering'],

@@ -10,7 +10,7 @@ import { error_handler } from "./middlewares/error_handler.js";
 import { cors_options } from "./configs/cors_options.js";
 //routers
 import user_router from "./routers/user_router.js"
-
+import product_router from './routers/product_router.js'
 //configuration
 dotenv.config();
 const app = express();
@@ -21,6 +21,7 @@ app.use(cors(cors_options));
 
 //routers
 app.use("/user",user_router)
+app.use('/product',product_router)
 
 //errors
 app.use(error_handler)

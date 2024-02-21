@@ -4,7 +4,7 @@ const OrderSchema = new mongoose.Schema({
     customer: {type: mongoose.Types.ObjectId},
     status:{
         type: String,
-        enum: ['pending', 'preparing', 'serving','sending'],
+        enum: ['pending', 'preparing', 'serving','delivering'],
         default: 'pending'
     }
 

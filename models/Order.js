@@ -6,9 +6,10 @@ const OrderSchema = new mongoose.Schema({
     total: {type: String},
     status:{
         type: String,
-        enum: ['pending', 'preparing', 'serving','delivering'],
+        enum: ['pending', 'preparing', 'serving','delivering', 'delivered','cancelled'],
         default: 'pending'
-    }
+    },
+    rider:{type: Object}
 
 })
 export default mongoose.model('Order', OrderSchema)

@@ -52,13 +52,14 @@ export const update_status = async (req, res) =>{
     const {id, status} = req.params
     const {role} = req.user
 
-    if(role == 'admin' && !['preparing','serving','delivering','cancelled','pending'].includes(status)) throw new UnauthorizedError("You are not autherized!")
+    if(role == 'admin' && !['preparing','serving','pending','cancelled'].includes(status)) throw new UnauthorizedError("You are not autherized!")
     if(role == 'rider' && !['delivered'].includes(status)) throw new UnauthorizedError("You are not autherized!")
     if(role == 'customer' && !['cancelled'].includes(status)) throw new UnauthorizedError("You are not autherized!")
 
     const order = await Order.findById(id)
     if(!order) throw new BadRequestError('Order not found')
-    if(role == 'customer' && ['cancelled'].includes(status) && !order.status == 'pending') throw new BadRequestError('Cancel only if the status is PENDING')
+    console.log(`${role} ${status} ${order.status}`)
+    if(['customer','admin'].includes(role) && status == 'cancelled' && !['pending'].includes(order.status)) throw new BadRequestError('Cancel only if the status is PENDING')
 
     await Order.findByIdAndUpdate(id,{status})
     res.status(StatusCodes.OK).json('')
@@ -67,9 +68,9 @@ export const update_status = async (req, res) =>{
 export const delete_order = async (req, res) => {
     const {id} = req.params
     const {role} = req.user
-    if(role != 'admin') throw new UnauthorizedError('You are not autherized for this action!')
+    if(!['admin','customer'].includes(role)) throw new UnauthorizedError('You are not autherized for this action!')
     const order = await Order.findById(id)
-    if(!['delivered','cancelled','pending'].includes(order.status)) throw new BadRequestError("Can't delete order if status not (delivered, cancelled, pending")
+    if(!['delivered','cancelled'].includes(order.status)) throw new BadRequestError("Can't delete order if status not (delivered, cancelled)")
     await Order.findByIdAndDelete(id)
     res.status(StatusCodes.OK).json('')
 }

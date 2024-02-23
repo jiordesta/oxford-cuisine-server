@@ -23,7 +23,8 @@ export const login = async (req, res) => {
     res.cookie('token',token,{
         httpOnly:true,
         expires:new Date(Date.now() + oneDay),
-        secure:true
+        secure:true,
+        sameSite: 'None'
     })
     res.status(StatusCodes.OK).json("Logged in")
 }
@@ -32,6 +33,7 @@ export const logout = async (req, res) => {
       httpOnly: true,
       expires: new Date(Date.now()),
       secure: true,
+      sameSite: 'None'
     });
     res.status(StatusCodes.OK).json("Logged out")
 };
